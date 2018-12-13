@@ -67,6 +67,7 @@ ROBOTSTXT_OBEY = False
 ITEM_PIPELINES = {
    'baby.pipelines.BabyPipeline': 300,
    'baby.pipelines.BabyPipelineTxt': 301,
+   'baby.pipelines.Book136Pipeline': 302,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -89,3 +90,4 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+

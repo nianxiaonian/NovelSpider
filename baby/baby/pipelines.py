@@ -6,6 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import re
 
+from baby.spiders.book136 import Book136Spider
 from baby.spiders.novel import NovelSpider
 from pymongo import  MongoClient
 
@@ -34,7 +35,7 @@ class BabyPipelineTxt(object):
             f = open('/Users/nianzhidan/Documents/{}.txt'.format(item['name']), 'wb')
             f.write(('作者：{}\n'.format(item['author']).encode('utf-8')))
             f.write(('状态：{}\n'.format(item['status'])).encode('utf-8'))
-            f.write(('分类：{}\n'.format(item['category'])).encode('utf-8'))
+            f.write(('分类：{}\n'.format(item['category_name'])).encode('utf-8'))
             f.write(('原文链接地址：{}\n'.format(item['url'])).encode('utf-8'))
             f.write(('封面图片：{}\n'.format(item['image'])).encode('utf-8'))
             f.write('正文\n'.encode('utf-8'))
@@ -46,4 +47,18 @@ class BabyPipelineTxt(object):
         return item
 
 
+class Book136Pipeline(object):
 
+    def open_spider(self, spider):
+        if isinstance(spider, Book136Spider):
+            self.client = MongoClient(host='127.0.0.1', port=27017)
+            self.collections = self.client['baby']['book136']
+
+    def process_item(self, item, spider):
+        if isinstance(spider, Book136Spider):
+            self.collections.insert(dict(item))
+        return item
+
+    def close_spider(self, spider):
+        if isinstance(spider, Book136Spider):
+            self.client.close()
